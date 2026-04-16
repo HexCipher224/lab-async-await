@@ -1,42 +1,40 @@
 // Write your code here!
+async function fetchPosts() {
+try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const posts = await response.json();
+
+    displayPosts(posts);
+
+} catch (error) {
+    console.error("Fetch error:", error);
+}
+}
+
 function displayPosts(posts) {
     const postList = document.getElementById("post-list");
 
-    //clear existing content 
-    postList.innerHTML = "";
+  // safety check (prevents null error)
+if (!postList) {
+    console.error("post-list element not found in HTML");
+    return;
+    }
 
-    posts.forEach(posts => {
-        //create elements
-        const li = document.createElement("li");
-        const h1 = document.createElement("h1");
-        const p = document.createElement("p");
+postList.innerHTML = "";
 
-        //set content
-        h1.textContent = postList.title;
-        p.textContent = postList.body;
+posts.forEach(post => {
+    const li = document.createElement("li");
+    const h1 = document.createElement("h1");
+    const p = document.createElement("p");
 
-        //Append elements
-        li.appendChild(h1);
-        li.appendChild(p);
-        postList.appendChild(li);
-    });
+    h1.textContent = post.title;
+    p.textContent = post.body;
+
+    li.appendChild(h1);
+    li.appendChild(p);
+    postList.appendChild(li);
+});
 }
 
-//A sync function to fetch posts
-async function getPosts() {
-    try {
-        const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-
-        //convert response to JSON 
-        const data = await response.json();
-
-        //call display function
-        displayPosts(data);
-
-    } catch (error) {
-        console.error("Error fetching posts:", error);
-    }
-    }
-
-//Call function when page loads
-getPosts();
+// run function
+fetchPosts();
