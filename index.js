@@ -1,40 +1,37 @@
 // Write your code here!
-async function fetchPosts() {
-try {
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
-    const posts = await response.json();
-
-    displayPosts(posts);
-
-} catch (error) {
-    console.error("Fetch error:", error);
-}
-}
-
+// Function to display posts
 function displayPosts(posts) {
-    const postList = document.getElementById("post-list");
+  const postList = document.getElementById("post-list");
 
-  // safety check (prevents null error)
-if (!postList) {
-    console.error("post-list element not found in HTML");
-    return;
-    }
-
-postList.innerHTML = "";
-
-posts.forEach(post => {
+  posts.forEach(post => {
+    // Create elements
     const li = document.createElement("li");
-    const h1 = document.createElement("h1");
-    const p = document.createElement("p");
+    const title = document.createElement("h1");
+    const body = document.createElement("p");
 
-    h1.textContent = post.title;
-    p.textContent = post.body;
+    // Set content
+    title.textContent = post.title;
+    body.textContent = post.body;
 
-    li.appendChild(h1);
-    li.appendChild(p);
+    // Append elements
+    li.appendChild(title);
+    li.appendChild(body);
     postList.appendChild(li);
-});
+  });
 }
 
-// run function
+// Async function to fetch posts
+async function fetchPosts() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const data = await response.json();
+
+    // Call display function
+    displayPosts(data);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
+}
+
+// Call the function
 fetchPosts();
